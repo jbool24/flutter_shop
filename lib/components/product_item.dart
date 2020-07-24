@@ -9,8 +9,27 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridTile(
-      child: Image.network(imageUrl),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(15),
+        bottomRight: Radius.circular(15),
+      ),
+      child: GridTile(
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+        ),
+        footer: GridTileBar(
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
+          ),
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.shopping_cart),
+          backgroundColor: Color.fromRGBO(0, 0, 0, 0.4),
+        ),
+      ),
     );
   }
 }
