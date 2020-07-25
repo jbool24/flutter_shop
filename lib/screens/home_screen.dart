@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_shop/components/products_grid.dart';
 import 'package:flutter_shop/providers/catalog_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProductOverviewScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   static final screenName = '/products';
 
   @override
-  _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
-}
-
-class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
-  @override
   Widget build(BuildContext context) {
     final catalog = Provider.of<Catalog>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Catalog'),
@@ -45,6 +40,33 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 400.0,
+                reverse: false,
+                autoPlay: true,
+                autoPlayInterval: Duration(seconds: 5),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                onPageChanged: null,
+                scrollDirection: Axis.horizontal,
+              ),
+              items: catalog.products.map((product) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(color: Colors.amber),
+                        child: Image.network(
+                          product.imageUrl,
+                          fit: BoxFit.cover,
+                        ));
+                  },
+                );
+              }).toList(),
+            ),
             SizedBox(
               height: 30,
             ),
