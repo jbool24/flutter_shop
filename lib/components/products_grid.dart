@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/screens/product_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_shop/components/product_item.dart';
@@ -10,19 +11,26 @@ class ProductsGrid extends StatelessWidget {
     final catalog = Provider.of<Catalog>(context);
     final products = catalog.products;
 
+    void selectProduct(String productId) {
+      Navigator.pushNamed(context, ProductDetailsScreen.screenName,
+          arguments: productId);
+    }
+
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
-      itemBuilder: (ctx, idx) => ProductItem(
-        products[idx].id,
-        products[idx].title,
-        products[idx].imageUrl,
+      itemBuilder: (ctx, idx) => ChangeNotifierProvider.value(
+        value: products[idx],
+        child: GestureDetector(
+          onTap: () => selectProduct(products[idx].id),
+          child: ProductItem(),
+        ),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 3 / 2,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
+        mainAxisSpacing: 30,
+        crossAxisSpacing: 30,
       ),
     );
   }
